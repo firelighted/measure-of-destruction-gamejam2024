@@ -1,0 +1,90 @@
+[gd_scene load_steps=10 format=3 uid="uid://c4ee8v8v134w"]
+
+[ext_resource type="PackedScene" uid="uid://ch4l447t041f8" path="res://src/Player/player.tscn" id="1_iwn1j"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_b3cad"]
+size = Vector3(25, 1, 25)
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_1aqb2"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_4kmyu"]
+noise_type = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_4nva3"]
+seamless = true
+as_normal_map = true
+bump_strength = 32.0
+noise = SubResource("FastNoiseLite_4kmyu")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_782v1"]
+albedo_color = Color(0, 0.282353, 0.137255, 1)
+metallic = 1.0
+metallic_specular = 0.36
+metallic_texture = SubResource("NoiseTexture2D_1aqb2")
+roughness_texture = SubResource("NoiseTexture2D_4nva3")
+roughness_texture_channel = 4
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_4658f"]
+material = SubResource("StandardMaterial3D_782v1")
+size = Vector2(25, 25)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_xr2hf"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_a304x"]
+
+[node name="World" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 5.43068, 0)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("BoxShape3D_b3cad")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+mesh = SubResource("PlaneMesh_4658f")
+
+[node name="CharacterBody3D" parent="." instance=ExtResource("1_iwn1j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.66008, 0)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="MarginContainer" type="MarginContainer" parent="UI"]
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="Label" type="Label" parent="UI/MarginContainer"]
+layout_mode = 2
+text = "ESC to allow mouse outside game
+arrow keys to move
+mouse to rotate view
+right click to allow mouse outside game"
+
+[node name="InteractionLabel" type="Label" parent="UI"]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -72.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Press E to Interact"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="StaticBody3D2" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -4)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D2"]
+shape = SubResource("CylinderShape3D_xr2hf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D2"]
+mesh = SubResource("CylinderMesh_a304x")

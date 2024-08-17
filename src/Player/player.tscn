@@ -1,0 +1,167 @@
+[gd_scene load_steps=13 format=3 uid="uid://ch4l447t041f8"]
+
+[ext_resource type="Script" path="res://src/Player/player.gd" id="1_42i3d"]
+[ext_resource type="PackedScene" uid="uid://df6af6hm2wp4a" path="res://src/Interactable/explosion.tscn" id="2_jtex1"]
+[ext_resource type="Script" path="res://src/Interactable/interaction_detection.gd" id="2_jxndw"]
+[ext_resource type="AudioStream" uid="uid://b3in2n5rjrnmy" path="res://src/Audio/boom.wav" id="4_2dcpc"]
+[ext_resource type="AudioStream" uid="uid://dmaby1mgnwen5" path="res://src/Audio/extending_quickly.wav" id="5_ntop2"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_116qj"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tqy1i"]
+albedo_color = Color(1, 0.784314, 0.368627, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_hwlrm"]
+material = SubResource("StandardMaterial3D_tqy1i")
+size = Vector3(0.2, 0.1, 3)
+
+[sub_resource type="Animation" id="Animation_qtikr"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera3D/RulerMeshInstance:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1, 0, -1.7)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Camera3D/RulerMeshInstance:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1.0472, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Camera3D/RulerMeshInstance:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_axe3o"]
+resource_name = "idle"
+length = 1.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera3D/RulerMeshInstance:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.6, 1.3),
+"transitions": PackedFloat32Array(0.5, -2, 2),
+"update": 0,
+"values": [Vector3(1, 0, -1.7), Vector3(1, 0, -1.75), Vector3(1, 0, -1.7)]
+}
+
+[sub_resource type="Animation" id="Animation_4e1h3"]
+resource_name = "measure"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera3D/RulerMeshInstance:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.4, 0.6, 1.6, 1.9),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(1, 0, -1.7), Vector3(1, 0, -1.135), Vector3(1, -0.145, -1.135), Vector3(1, -0.111, -1.893), Vector3(1, -0.111, -1.893), Vector3(1, 0, -1.7)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Camera3D/RulerMeshInstance:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.3, 0.4, 0.6, 1.6, 1.9),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(1.0472, 0, 0), Vector3(2.056, 0, 0), Vector3(1.84132, 0, 0), Vector3(1.88496, 0, 0), Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(1.0472, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Camera3D/RulerMeshInstance:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.6, 1, 1.9),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(1, 1, 1), Vector3(1, 1, 0.3), Vector3(1, 1, 0.4), Vector3(1, 1, 5), Vector3(1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_5uamo"]
+_data = {
+"RESET": SubResource("Animation_qtikr"),
+"idle": SubResource("Animation_axe3o"),
+"measure": SubResource("Animation_4e1h3")
+}
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_42i3d")
+
+[node name="Explosion" parent="." instance=ExtResource("2_jtex1")]
+visible = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_116qj")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+
+[node name="RulerMeshInstance" type="MeshInstance3D" parent="Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 0.499998, -0.866027, 0, 0.866027, 0.499998, 1, 0, -1.7)
+transparency = 1.0
+mesh = SubResource("BoxMesh_hwlrm")
+
+[node name="InteractionRayCast3D" type="RayCast3D" parent="Camera3D"]
+target_position = Vector3(0, 0, -15)
+collision_mask = 2
+script = ExtResource("2_jxndw")
+
+[node name="ExplosionStreamPlayer" type="AudioStreamPlayer" parent="Camera3D/InteractionRayCast3D"]
+stream = ExtResource("4_2dcpc")
+
+[node name="MeasureStreamPlayer" type="AudioStreamPlayer" parent="Camera3D/InteractionRayCast3D"]
+stream = ExtResource("5_ntop2")
+
+[node name="DelayMeasureSoundTimer" type="Timer" parent="Camera3D/InteractionRayCast3D"]
+one_shot = true
+
+[node name="Target" type="Node3D" parent="Camera3D/InteractionRayCast3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 8, 0)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)
+omni_range = 200.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_5uamo")
+}
+
+[connection signal="timeout" from="Camera3D/InteractionRayCast3D/DelayMeasureSoundTimer" to="Camera3D/InteractionRayCast3D" method="_on_delay_measure_sound_timer_timeout"]
+[connection signal="animation_finished" from="AnimationPlayer" to="Camera3D/InteractionRayCast3D" method="_on_animation_player_animation_finished"]

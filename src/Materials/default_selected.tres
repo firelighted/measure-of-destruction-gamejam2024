@@ -1,0 +1,19 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://b247gc2llrcj4"]
+
+[ext_resource type="Shader" path="res://src/Shaders/hologram2.gdshader" id="1_7mc8c"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_7mc8c")
+shader_parameter/line_color = Color(0.866667, 0.862745, 0.0941176, 1)
+shader_parameter/line_width = 0.005
+shader_parameter/line_blur = 0.2
+shader_parameter/line_speed = 0.02
+shader_parameter/straight_lines = true
+shader_parameter/interrupt_width = 0.5
+shader_parameter/interrupt_blur = 0.25
+shader_parameter/interrupt_speed = 0.2
+shader_parameter/glow_color = Color(0.839216, 0.72549, 0.0352941, 1)
+shader_parameter/glow_itensity = 4.5
+shader_parameter/glow_amount = 4.5
+shader_parameter/flickering = 0.879

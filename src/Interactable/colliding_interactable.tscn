@@ -1,0 +1,58 @@
+[gd_scene load_steps=7 format=3 uid="uid://dyftwcdw40lrx"]
+
+[ext_resource type="Script" path="res://src/Interactable/interactable.gd" id="1_icbin"]
+[ext_resource type="Material" uid="uid://bb8uqudwor35l" path="res://src/Materials/default_unselected.tres" id="2_crpua"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_xr2hf"]
+height = 4.0
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_13alx"]
+top_radius = 0.0
+bottom_radius = 1.67
+height = 4.0
+rings = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_37045"]
+albedo_color = Color(0.4, 0.0627451, 0.0431373, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_a304x"]
+height = 1.0
+rings = 2
+
+[node name="CollidingInteractable" type="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+collision_layer = 3
+script = ExtResource("1_icbin")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CylinderShape3D_xr2hf")
+
+[node name="DisplayMeshes" type="Node3D" parent="."]
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="DisplayMeshes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+material_override = ExtResource("2_crpua")
+mesh = SubResource("CylinderMesh_13alx")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="DisplayMeshes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.47807, 0)
+material_override = SubResource("StandardMaterial3D_37045")
+mesh = SubResource("CylinderMesh_a304x")
+skeleton = NodePath("../..")
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.778637, 0.627474, 0, -0.627474, -0.778637, -0.0554714, 0.0368204, 0)
+billboard = 1
+no_depth_test = true
+fixed_size = true
+render_priority = 100
+outline_render_priority = 99
+text = "..."
+font_size = 20
+autowrap_mode = 2
+
+[node name="MeasureTimer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="timeout" from="MeasureTimer" to="." method="_on_measure_timer_timeout"]
